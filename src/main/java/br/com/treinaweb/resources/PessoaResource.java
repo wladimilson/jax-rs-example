@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.treinaweb.filters.Authorize;
 import br.com.treinaweb.model.Pessoa;
 import br.com.treinaweb.repositories.PessoaRepository;
 
@@ -21,12 +22,14 @@ public class PessoaResource {
 
     private PessoaRepository _repositorio = new PessoaRepository();
     
+    @Authorize
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Pessoa> get() {
         return _repositorio.GetAll();
     }
 
+    @Authorize
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +37,7 @@ public class PessoaResource {
         return _repositorio.Get(id);
     }
 
+    @Authorize
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -49,6 +53,7 @@ public class PessoaResource {
         } 
     }
 
+    @Authorize
     @PUT
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,6 +75,7 @@ public class PessoaResource {
         } 
     }
 
+    @Authorize
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
