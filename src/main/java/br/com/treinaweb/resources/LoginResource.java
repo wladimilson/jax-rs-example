@@ -10,8 +10,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import br.com.treinaweb.model.Usuario;
 import io.jsonwebtoken.Jwts;
@@ -37,8 +39,16 @@ public class LoginResource {
                     .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant()))
                     .signWith(CHAVE, SignatureAlgorithm.HS512)
                     .compact();
+
+                Link link = Link.fromUriBuilder(
+                                    UriBuilder.fromUri("http://localhost:8080/")
+                                    .path("pessoa")
+                                )
+                                .rel("lista_pessoas")
+                                .type("GET")
+                                .build();
                 
-                return Response.status(Response.Status.OK).entity(jwtToken).build();
+                return Response.status(Response.Status.OK).entity(jwtToken).links(link).build();
             }
             else
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Usuário e/ou senha inválidos").build();
